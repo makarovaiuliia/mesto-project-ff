@@ -1,5 +1,5 @@
 import "../pages/index.css";
-import "./cards.js"
+import { initialCards } from "./cards.js";
 
 const avatar = new URL("../images/avatar.jpg", import.meta.url);
 document.querySelector(
