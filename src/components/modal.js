@@ -1,22 +1,37 @@
-function openPopup(popup, imageUrl) {
-  const popupElement = document.querySelector(`.${popup}`);
-  const imageContainer = popupElement.querySelector("img");
-  const closeBtn = popupElement.querySelector(".popup__close");
+function openPopup(popup, image) {
+  const closeBtn = popup.querySelector(".popup__close");
+  const popupContent = popup.querySelector(".popup__content");
 
-  if (imageContainer) {
-    imageContainer.src = imageUrl;
+  if (image) {
+    addInfoToPopup(popup, image);
   }
 
-  popupElement.classList.add("popup_is-opened");
-  // todo: add esc key and click on overlay functionality
-  closeBtn.addEventListener("click", (evt) => {
+  popup.classList.add("popup_is-opened");
+  closeBtn.addEventListener("click", () => {
     closePopup(popup);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closePopup(popup);
+    }
+  });
+  document.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (event.target.classList.contains("popup")) {
+      closePopup(popup);
+    }
   });
 }
 
 function closePopup(popup) {
-  const popupElement = document.querySelector(`.${popup}`);
-  popupElement.classList.remove("popup_is-opened");
+  popup.classList.remove("popup_is-opened");
+}
+
+function addInfoToPopup(popup, image) {
+  const imageContainer = popup.querySelector("img");
+  const textContainer = popup.querySelector("p");
+  textContainer.textContent = image.alt;
+  imageContainer.src = image.src;
 }
 
 export { closePopup, openPopup };

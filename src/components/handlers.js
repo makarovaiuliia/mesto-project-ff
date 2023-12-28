@@ -1,12 +1,8 @@
-function handleAddCard(evt) {
-  evt.preventDefault();
-  const name = formAdd.elements["place-name"].value;
-  const link = formAdd.elements.link.value;
-  const newCard = { name, link };
-  addCard(newCard);
-  closePopup("popup_type_new-card");
-  formAdd.reset();
-}
+import { closePopup } from "./modal.js";
+import { addCard } from "./card.js";
+
+const formEdit = document.forms["edit-profile"];
+const formAdd = document.forms["new-place"];
 
 function placeCurrent() {
   const currentName = document.querySelector(".profile__title").textContent;
@@ -20,16 +16,27 @@ function placeCurrent() {
   description.value = currentDescription;
 }
 
+function handleAddCard(evt) {
+  evt.preventDefault();
+  const popupAdd = document.querySelector(".popup_type_new-card");
+  const name = formAdd.elements["place-name"].value;
+  const link = formAdd.elements.link.value;
+  const newCard = { name, link };
+  addCard(newCard, true);
+  closePopup(popupAdd);
+  formAdd.reset();
+}
+
 function handleFormSubmit(evt) {
   evt.preventDefault();
+  const editPopup = document.querySelector(".popup_type_edit");
+  const name = formEdit.elements.name;
+  const description = formEdit.elements.description;
   const nameInput = document.querySelector(".profile__title");
   const descriptionInput = document.querySelector(".profile__description");
   nameInput.textContent = name.value;
   descriptionInput.textContent = description.value;
-  closePopup("popup_type_edit");
+  closePopup(editPopup);
 }
 
-const formEdit = document.forms["edit-profile"];
-const formAdd = document.forms["new-place"];
-
-export { handleAddCard, handleFormSubmit, placeCurrent, formAdd, formEdit };
+export { placeCurrent, handleAddCard, handleFormSubmit, formAdd, formEdit };
