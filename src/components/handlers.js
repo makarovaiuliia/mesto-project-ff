@@ -16,8 +16,8 @@ function placeCurrent() {
   description.value = currentDescription;
 }
 
-function handleAddCard(evt) {
-  evt.preventDefault();
+function handleAddCard(event) {
+  event.preventDefault();
   const popupAdd = document.querySelector(".popup_type_new-card");
   const name = formAdd.elements["place-name"].value;
   const link = formAdd.elements.link.value;
@@ -27,8 +27,8 @@ function handleAddCard(evt) {
   formAdd.reset();
 }
 
-function handleFormSubmit(evt) {
-  evt.preventDefault();
+function handleFormSubmit(event) {
+  event.preventDefault();
   const editPopup = document.querySelector(".popup_type_edit");
   const name = formEdit.elements.name;
   const description = formEdit.elements.description;
