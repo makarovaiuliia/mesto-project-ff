@@ -1,16 +1,11 @@
 import "../pages/index.css";
 import { initialCards } from "../components/cards.js";
-import {
-  cardContainer,
-  deleteCard,
-  likeCard,
-  createCard,
-} from "../components/card.js";
+import { deleteCard, likeCard, createCard } from "../components/card.js";
 import { openPopup, closePopup } from "../components/modal.js";
 import {
   loadCurrentProfileInfo,
   handleAddCard,
-  handleFormSubmit,
+  handleEditFormSubmit,
   formAdd,
   formEdit,
   newCardPopup,
@@ -24,6 +19,8 @@ document.querySelector(
 ).style.backgroundImage = `url(${avatar})`;
 
 // add initial cards
+const cardContainer = document.querySelector(".places__list");
+
 initialCards.forEach(addCard);
 
 function addCard(item, isNew) {
@@ -40,12 +37,11 @@ const imageContainer = document.querySelector(".popup__image");
 const textContainer = document.querySelector(".popup__caption");
 const imagePopup = document.querySelector(".popup_type_image");
 
-function openImage(event) {
-  const image = event.target;
-
-  if (!image.classList.contains("card__delete-button")) {
-    textContainer.textContent = image.alt;
-    imageContainer.src = image.src;
+function openImage(event, name, link) {
+  if (!event.target.classList.contains("card__delete-button")) {
+    textContainer.textContent = name;
+    imageContainer.src = link;
+    imageContainer.alt = name;
 
     openPopup(imagePopup);
   }
@@ -85,7 +81,7 @@ function closeByClick(event) {
 }
 
 // add event listeners to forms
-formEdit.addEventListener("submit", handleFormSubmit);
+formEdit.addEventListener("submit", handleEditFormSubmit);
 formAdd.addEventListener("submit", handleAddCard);
 
 export { addCard };

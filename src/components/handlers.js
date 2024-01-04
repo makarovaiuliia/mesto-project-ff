@@ -25,25 +25,25 @@ function handleAddCard(event) {
   const link = linkAdd.value;
   const newCard = { name, link };
   addCard(newCard, true);
-  submitForm(newCardPopup);
+  resetFormAndClosePopup(formAdd, newCardPopup);
 }
 
-function handleFormSubmit(event) {
+function handleEditFormSubmit(event) {
   event.preventDefault();
   nameInput.textContent = nameEdit.value;
   descriptionInput.textContent = description.value;
-  submitForm(editPopup);
+  resetFormAndClosePopup(formEdit, editPopup);
 }
 
-function submitForm(popup) {
-  formAdd.reset();
+function resetFormAndClosePopup(form, popup) {
+  form.reset();
   closePopup(popup);
 }
 
 export {
   loadCurrentProfileInfo,
   handleAddCard,
-  handleFormSubmit,
+  handleEditFormSubmit,
   formAdd,
   formEdit,
   newCardPopup,

@@ -1,7 +1,7 @@
 function openPopup(popup) {
   popup.classList.add("popup_is-opened");
 
-  document.addEventListener("keydown", closeByEsc.bind(null, popup));
+  document.addEventListener("keydown", closeByEsc);
 }
 
 function closePopup(popup) {
@@ -10,8 +10,9 @@ function closePopup(popup) {
   document.removeEventListener("keydown", closeByEsc);
 }
 
-function closeByEsc(popup, event) {
+function closeByEsc(event) {
   if (event.key === "Escape") {
+    const popup = document.querySelector(".popup_is-opened");
     closePopup(popup);
   }
 }
