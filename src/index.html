@@ -12,8 +12,11 @@
   <body class="page">
     <div class="page__content">
       <header class="header page__section">
-        <img src="<%=require('./images/logo.svg')%>"" alt="Логотип проекта
-        место" class="logo header__logo">
+        <img
+          src="<%=require('./images/logo.svg')%>"
+          alt="Логотип проекта место"
+          class="logo header__logo"
+        />
       </header>
       <main class="content">
         <section class="profile page__section">
@@ -37,20 +40,40 @@
           <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Редактировать профиль</h3>
           <form class="popup__form" name="edit-profile">
-            <input
-              type="text"
-              name="name"
-              class="popup__input popup__input_type_name"
-              placeholder="Имя"
-              required
-            />
-            <input
-              type="text"
-              name="description"
-              class="popup__input popup__input_type_description"
-              placeholder="Занятие"
-              required
-            />
+            <label class="popup__form-field">
+              <input
+                id="input__name"
+                type="text"
+                name="name"
+                class="popup__input popup__input_type_name"
+                placeholder="Имя"
+                minlength="2"
+                pattern="^[a-zA-Zа-яА-Яё\s\-]+$"
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."
+                maxlength="40"
+                required
+              />
+              <span class="popup__input-error input__name-error"
+                >Вы пропустили это поле.</span
+              >
+            </label>
+            <label class="popup__form-field">
+              <input
+                id="input__description"
+                type="text"
+                name="description"
+                class="popup__input popup__input_type_description"
+                placeholder="Занятие"
+                pattern="^[a-zA-Zа-яА-Яё\s\-]+$"
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."
+                minlength="2"
+                maxlength="200"
+                required
+              />
+              <span class="popup__input-error input__description-error"
+                >Вы пропустили это поле.</span
+              >
+            </label>
             <button type="submit" class="button popup__button">
               Сохранить
             </button>
@@ -62,21 +85,39 @@
           <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Новое место</h3>
           <form class="popup__form" name="new-place">
-            <input
-              type="text"
-              name="place-name"
-              class="popup__input popup__input_type_card-name"
-              placeholder="Название"
-              required
-            />
-            <input
-              type="url"
-              name="link"
-              class="popup__input popup__input_type_url"
-              placeholder="Ссылка на картинку"
-              required
-            />
-            <button type="submit" class="button popup__button">
+            <label class="popup__form-field">
+              <input
+                id="input__place-name"
+                type="text"
+                name="place-name"
+                class="popup__input popup__input_type_card-name"
+                placeholder="Название"
+                pattern="^[a-zA-Zа-яА-Яё\s\-]+$"
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."
+                minlength="2"
+                maxlength="30"
+                required
+              />
+              <span class="popup__input-error input__place-name-error"
+                >Вы пропустили это поле.</span
+              >
+            </label>
+            <label class="popup__form-field">
+              <input
+                id="input__url"
+                type="url"
+                name="link"
+                class="popup__input popup__input_type_url"
+                pattern="\b(?:http|https)://\S+\b"
+                data-error-message="Пожалуйста, введите действительный URL."
+                placeholder="Ссылка на картинку"
+                required
+              />
+              <span class="popup__input-error input__url-error"
+                >Введите адрес сайта.</span
+              >
+            </label>
+            <button type="submit" class="button popup__button popup__button_disabled">
               Сохранить
             </button>
           </form>

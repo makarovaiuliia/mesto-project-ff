@@ -1,5 +1,5 @@
 import { closePopup } from "./modal.js";
-import { addCard } from "../scripts/index.js";
+import { addCard } from "./index.js";
 
 const formEdit = document.forms["edit-profile"];
 const formAdd = document.forms["new-place"];
