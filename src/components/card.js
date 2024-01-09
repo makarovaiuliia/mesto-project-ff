@@ -25,6 +25,7 @@ function createCard(card, userId, deleteCard, likeCard, openImage) {
     });
   }
 
+  const likeBtn = cardElement.querySelector(".card__like-button");
   const LikedByMe = card.likes.some((like) => {
     return like._id === userId;
   });
@@ -32,7 +33,6 @@ function createCard(card, userId, deleteCard, likeCard, openImage) {
     likeBtn.classList.add("card__like-button_is-active");
   }
 
-  const likeBtn = cardElement.querySelector(".card__like-button");
   likeBtn.addEventListener("click", (event) => {
     likeCard(event, cardId);
   });
