@@ -2,18 +2,17 @@ import { addNewCard, editProfileInfo } from "./api.js";
 import { closePopup } from "./modal.js";
 import { addCard } from "./index.js";
 
-const formEdit = document.forms["edit-profile"];
-const formAdd = document.forms["new-place"];
 const newCardPopup = document.querySelector(".popup_type_new-card");
-const editPopup = document.querySelector(".popup_type_edit");
+const formAdd = document.forms["new-place"];
+const nameAdd = formAdd.elements["place-name"];
+const linkAdd = formAdd.elements.link;
 
+const editPopup = document.querySelector(".popup_type_edit");
+const formEdit = document.forms["edit-profile"];
 const nameInput = document.querySelector(".profile__title");
 const descriptionInput = document.querySelector(".profile__description");
 const nameEdit = formEdit.elements.name;
 const description = formEdit.elements.description;
-
-const nameAdd = formAdd.elements["place-name"];
-const linkAdd = formAdd.elements.link;
 
 function loadCurrentProfileInfo() {
   nameEdit.value = nameInput.textContent;

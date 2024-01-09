@@ -109,6 +109,21 @@ const addNewCard = (nameAdd, linkAdd, addCard) => {
     });
 };
 
+const deleteCardApi = (item, id) => {
+  fetch(`${config.baseUrl}/cards/${id}`, {
+    method: "DELETE",
+    headers: config.headers,
+  })
+    .then((res) => {
+      if (res.ok) {
+        item.remove();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const addLike = (likes, id) => {
   fetch(`${config.baseUrl}/cards/likes/${id}`, {
     method: "PUT",
@@ -144,21 +159,6 @@ const deleteLike = (likes, id) => {
     })
     .then((cardData) => {
       likes.textContent = cardData.likes.length;
-    });
-};
-
-const deleteCardApi = (item, id) => {
-  fetch(`${config.baseUrl}/cards/${id}`, {
-    method: "DELETE",
-    headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        item.remove();
-      }
-    })
-    .catch((err) => {
-      console.log(err);
     });
 };
 

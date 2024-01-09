@@ -13,12 +13,11 @@ import {
 import { enableValidation, clearValidation } from "./validation.js";
 import { initialCardLoad } from "./api.js";
 
+// initial card loading
 const cardContainer = document.querySelector(".places__list");
 const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const profileImage = document.querySelector(".profile__image");
-
-// initialCards.forEach(addCard);
 
 function addCard(item, userId, isNew) {
   const card = createCard(item, userId, deleteCard, likeCard, openImage);
@@ -28,6 +27,8 @@ function addCard(item, userId, isNew) {
     cardContainer.append(card);
   }
 }
+
+initialCardLoad(profileImage, profileName, profileDescription, addCard);
 
 // handle opening an image
 const imageContainer = document.querySelector(".popup__image");
@@ -98,8 +99,5 @@ const selectors = {
 };
 
 enableValidation(selectors);
-
-// initial card loading
-initialCardLoad(profileImage, profileName, profileDescription, addCard);
 
 export { addCard, selectors };
