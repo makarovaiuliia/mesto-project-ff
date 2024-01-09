@@ -1,3 +1,4 @@
+import { addNewCard, editProfileInfo } from "./api.js";
 import { closePopup } from "./modal.js";
 import { addCard } from "./index.js";
 
@@ -21,17 +22,13 @@ function loadCurrentProfileInfo() {
 
 function handleAddCard(event) {
   event.preventDefault();
-  const name = nameAdd.value;
-  const link = linkAdd.value;
-  const newCard = { name, link };
-  addCard(newCard, true);
+  addNewCard(nameAdd, linkAdd, addCard)
   resetFormAndClosePopup(formAdd, newCardPopup);
 }
 
 function handleEditFormSubmit(event) {
   event.preventDefault();
-  nameInput.textContent = nameEdit.value;
-  descriptionInput.textContent = description.value;
+  editProfileInfo(nameEdit, description, nameInput, descriptionInput);
   resetFormAndClosePopup(formEdit, editPopup);
 }
 

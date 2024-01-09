@@ -1,5 +1,4 @@
 import "../pages/index.css";
-import { initialCards } from "./cards.js";
 import { deleteCard, likeCard, createCard } from "./card.js";
 import { openPopup, closePopup } from "./modal.js";
 import {
@@ -12,6 +11,7 @@ import {
   editPopup,
 } from "./handlers.js";
 import { enableValidation, clearValidation } from "./validation.js";
+import { initialCardLoad } from "./api.js";
 
 const cardContainer = document.querySelector(".places__list");
 const profileName = document.querySelector(".profile__title");
@@ -20,8 +20,8 @@ const profileImage = document.querySelector(".profile__image");
 
 // initialCards.forEach(addCard);
 
-function addCard(item, isNew) {
-  const card = createCard(item, deleteCard, likeCard, openImage);
+function addCard(item, userId, isNew) {
+  const card = createCard(item, userId, deleteCard, likeCard, openImage);
   if (isNew) {
     cardContainer.prepend(card);
   } else {
@@ -99,52 +99,7 @@ const selectors = {
 
 enableValidation(selectors);
 
-// API
-
-// profile info
-
-fetch("https://nomoreparties.co/v1/wff-cohort-4/users/me", {
-  headers: {
-    authorization: "2209b353-8018-4252-b4c9-b7b1579d467a",
-  },
-})
-  .then((res) => {
-    return res.json();
-  })
-  .then((data) => {
-    profileImage.style.backgroundImage = `url(${data.avatar})`;
-    profileName.textContent = data.name;
-    profileDescription.textContent = data.about;
-  });
-
-// cards info
-
-fetch("https://nomoreparties.co/v1/wff-cohort-4/cards", {
-  headers: {
-    authorization: "2209b353-8018-4252-b4c9-b7b1579d467a",
-  },
-})
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    throw new Error("Network response was not ok.");
-  })
-  .then((data) => {
-    data.forEach((card) => {
-      const name = card.name;
-      const link = card.link;
-      const cardInfo = { name, link };
-      addCard(cardInfo);
-    });
-  })
-  .catch((error) => {
-    console.error("Fetch error:", error);
-  });
+// initial card loading
+initialCardLoad(profileImage, profileName, profileDescription, addCard);
 
 export { addCard, selectors };
-
-// headers: {
-//   authorization: "2209b353-8018-4252-b4c9-b7b1579d467a";
-// }
-//  https://nomoreparties.co/v1/wff-cohort-4/cards
