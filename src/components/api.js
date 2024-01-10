@@ -1,3 +1,5 @@
+import { currentCard } from "./card";
+
 const config = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-4",
   headers: {
@@ -116,14 +118,15 @@ const addNewCard = (nameAdd, linkAdd, addCard, submitButton) => {
     });
 };
 
-const deleteCardApi = (item, id) => {
-  fetch(`${config.baseUrl}/cards/${id}`, {
+const deleteCardApi = (currentCard, currentCardId) => {
+  fetch(`${config.baseUrl}/cards/${currentCardId}`, {
     method: "DELETE",
     headers: config.headers,
   })
     .then((res) => {
       if (res.ok) {
-        item.remove();
+        currentCard.remove();
+        currentCard = null;
       }
     })
     .catch((err) => {
@@ -176,13 +179,13 @@ const editAvatarApi = (newAvatarUrl, profileImage, submitButton) => {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
-      avatar: newAvatarUrl.value,
+      avatar: newAvatarUrl,
     }),
   })
     .then((res) => {
       submitButton.textContent = "Сохранить";
       if (res.ok) {
-        profileImage.style.backgroundImage = `url(${newAvatarUrl.value})`;
+        profileImage.style.backgroundImage = `url(${newAvatarUrl})`;
       } else {
         return Promise.reject(`Ошибка: ${res.status}`);
       }

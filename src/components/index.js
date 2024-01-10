@@ -1,13 +1,15 @@
 import "../pages/index.css";
-import { deleteCard, likeCard, createCard } from "./card.js";
+import { likeCard, createCard } from "./card.js";
 import { openPopup, closePopup } from "./modal.js";
 import {
   loadCurrentProfileInfo,
   handleAddCard,
   handleEditFormSubmit,
   handleEditAvatar,
+  handleDeleteCard,
   formAdd,
   formEdit,
+  formDelete,
   newCardPopup,
   editPopup,
   editAvatarPopup,
@@ -23,7 +25,7 @@ const profileDescription = document.querySelector(".profile__description");
 const profileImage = document.querySelector(".profile__image");
 
 function addCard(item, userId, isNew) {
-  const card = createCard(item, userId, deleteCard, likeCard, openImage);
+  const card = createCard(item, userId, likeCard, openImage);
   if (isNew) {
     cardContainer.prepend(card);
   } else {
@@ -99,6 +101,7 @@ function closeByClick(event) {
 formEdit.addEventListener("submit", handleEditFormSubmit);
 formAdd.addEventListener("submit", handleAddCard);
 formEditAvatar.addEventListener('submit', handleEditAvatar);
+formDelete.addEventListener("submit", handleDeleteCard);
 
 // validation
 const selectors = {

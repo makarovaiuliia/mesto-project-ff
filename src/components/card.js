@@ -1,8 +1,16 @@
-import { addLike, deleteLike, deleteCardApi } from "./api";
+import { addLike, deleteLike } from "./api";
+import { openPopup } from "./modal.js";
 
-function createCard(card, userId, deleteCard, likeCard, openImage) {
+const deletePopup = document.querySelector(".popup_type_delete");
+
+let currentCard = null;
+
+function createCard(card, userId, likeCard, openImage) {
   const template = document.getElementById("card-template").content;
   const cardElement = template.querySelector(".card").cloneNode(true);
+  const cardId = card._id;
+
+  cardElement.dataset.id = cardId;
 
   const title = cardElement.querySelector(".card__title");
   const image = cardElement.querySelector(".card__image");
@@ -14,14 +22,14 @@ function createCard(card, userId, deleteCard, likeCard, openImage) {
   title.textContent = card.name;
 
   const deleteBtn = cardElement.querySelector(".card__delete-button");
-  const cardId = card._id;
   const isOwner = card.owner._id === userId || !userId;
 
   if (!isOwner) {
     deleteBtn.remove();
   } else {
     deleteBtn.addEventListener("click", (event) => {
-      deleteCard(event, cardId);
+      currentCard = cardElement;
+      openPopup(deletePopup);
     });
   }
 
@@ -44,11 +52,6 @@ function createCard(card, userId, deleteCard, likeCard, openImage) {
   return cardElement;
 }
 
-function deleteCard(event, id) {
-  const item = event.target.closest(".card");
-  deleteCardApi(item, id);
-}
-
 function likeCard(event, id) {
   const likeBtn = event.target;
   const likes = likeBtn.nextElementSibling;
@@ -62,4 +65,4 @@ function likeCard(event, id) {
   }
 }
 
-export { deleteCard, likeCard, createCard };
+export { likeCard, createCard, currentCard };
