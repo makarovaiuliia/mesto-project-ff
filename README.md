@@ -1,2 +1,3 @@
 # Проектная работа Mesto
-https://github.com/makarovaiuliia/mesto-project-ff.git
+Deploy проекта: https://makarovaiuliia.github.io/mesto-project-ff/
+Github проекта:https://github.com/makarovaiuliia/mesto-project-ff.git
