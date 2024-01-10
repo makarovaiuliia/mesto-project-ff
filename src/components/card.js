@@ -2,7 +2,6 @@ import { addLike, deleteLike } from "./api";
 import { openPopup } from "./modal.js";
 
 const deletePopup = document.querySelector(".popup_type_delete");
-
 let currentCard = null;
 
 function createCard(card, userId, likeCard, openImage) {

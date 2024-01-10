@@ -1,10 +1,7 @@
-import { currentCard } from "./card";
-
 const config = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-4",
   headers: {
     authorization: "2209b353-8018-4252-b4c9-b7b1579d467a",
-    "Content-Type": "application/json",
   },
 };
 

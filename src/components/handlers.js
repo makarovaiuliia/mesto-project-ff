@@ -61,6 +61,7 @@ function handleDeleteCard(event) {
   deleteCardApi(currentCard, currentCardId);
   resetFormAndClosePopup(formDelete, deletePopup);
 }
+
 function resetFormAndClosePopup(form, popup) {
   form.reset();
   closePopup(popup);

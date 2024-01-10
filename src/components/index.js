@@ -59,7 +59,7 @@ const closeBtns = document.querySelectorAll(".popup__close");
 editAvatarBtn.addEventListener("click", () => {
   const validationConfig = true;
   clearValidation(formEditAvatar, validationConfig, selectors);
-  formEditAvatar.elements["avatar-link"].value = '';
+  formEditAvatar.elements["avatar-link"].value = "";
   openPopup(editAvatarPopup);
 });
 
@@ -100,7 +100,7 @@ function closeByClick(event) {
 // add event listeners to forms
 formEdit.addEventListener("submit", handleEditFormSubmit);
 formAdd.addEventListener("submit", handleAddCard);
-formEditAvatar.addEventListener('submit', handleEditAvatar);
+formEditAvatar.addEventListener("submit", handleEditAvatar);
 formDelete.addEventListener("submit", handleDeleteCard);
 
 // validation
