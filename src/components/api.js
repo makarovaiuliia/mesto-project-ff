@@ -61,8 +61,10 @@ const editProfileInfo = (
   nameEdit,
   description,
   nameInput,
-  descriptionInput
+  descriptionInput,
+  submitButton
 ) => {
+  submitButton.textContent = "Сохранение...";
   fetch(`${config.baseUrl}/users/me`, {
     method: "PATCH",
     headers: config.headers,
@@ -72,6 +74,8 @@ const editProfileInfo = (
     }),
   })
     .then((res) => {
+      submitButton.textContent = "Сохранить";
+
       if (res.ok) {
         return res.json();
       }
@@ -86,7 +90,9 @@ const editProfileInfo = (
     });
 };
 
-const addNewCard = (nameAdd, linkAdd, addCard) => {
+const addNewCard = (nameAdd, linkAdd, addCard, submitButton) => {
+  submitButton.textContent = "Сохранение...";
+
   fetch(`${config.baseUrl}/cards`, {
     method: "POST",
     headers: config.headers,
@@ -105,6 +111,7 @@ const addNewCard = (nameAdd, linkAdd, addCard) => {
       console.log(err);
     })
     .then((card) => {
+      submitButton.textContent = "Сохранить";
       addCard(card, card.owner._id, true);
     });
 };
@@ -162,6 +169,29 @@ const deleteLike = (likes, id) => {
     });
 };
 
+const editAvatarApi = (newAvatarUrl, profileImage, submitButton) => {
+  submitButton.textContent = "Сохранение...";
+
+  fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: newAvatarUrl.value,
+    }),
+  })
+    .then((res) => {
+      submitButton.textContent = "Сохранить";
+      if (res.ok) {
+        profileImage.style.backgroundImage = `url(${newAvatarUrl.value})`;
+      } else {
+        return Promise.reject(`Ошибка: ${res.status}`);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export {
   addNewCard,
   editProfileInfo,
@@ -169,4 +199,5 @@ export {
   addLike,
   deleteLike,
   deleteCardApi,
+  editAvatarApi,
 };

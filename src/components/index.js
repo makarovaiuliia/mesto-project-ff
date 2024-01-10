@@ -5,10 +5,13 @@ import {
   loadCurrentProfileInfo,
   handleAddCard,
   handleEditFormSubmit,
+  handleEditAvatar,
   formAdd,
   formEdit,
   newCardPopup,
   editPopup,
+  editAvatarPopup,
+  formEditAvatar,
 } from "./handlers.js";
 import { enableValidation, clearValidation } from "./validation.js";
 import { initialCardLoad } from "./api.js";
@@ -48,7 +51,15 @@ function openImage(event, name, link) {
 // add event listeners to modals
 const editBtn = document.querySelector(".profile__edit-button");
 const addBtn = document.querySelector(".profile__add-button");
+const editAvatarBtn = document.querySelector(".profile__image-button");
 const closeBtns = document.querySelectorAll(".popup__close");
+
+editAvatarBtn.addEventListener("click", () => {
+  const validationConfig = true;
+  clearValidation(formEditAvatar, validationConfig, selectors);
+  formEditAvatar.elements["avatar-link"].value = '';
+  openPopup(editAvatarPopup);
+});
 
 addBtn.addEventListener("click", () => {
   const validationConfig = true;
@@ -87,6 +98,7 @@ function closeByClick(event) {
 // add event listeners to forms
 formEdit.addEventListener("submit", handleEditFormSubmit);
 formAdd.addEventListener("submit", handleAddCard);
+formEditAvatar.addEventListener('submit', handleEditAvatar);
 
 // validation
 const selectors = {
@@ -100,4 +112,4 @@ const selectors = {
 
 enableValidation(selectors);
 
-export { addCard, selectors };
+export { addCard, selectors, profileImage };

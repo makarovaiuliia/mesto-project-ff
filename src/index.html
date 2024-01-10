@@ -20,7 +20,10 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <div class="profile__image"></div>
+          <div class="profile__image">
+            <div class="profile__image-background"></div>
+            <button class="profile__image-button"></button>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title"></h1>
             <button class="profile__edit-button" type="button"></button>
@@ -131,6 +134,32 @@
           <button type="button" class="popup__close"></button>
           <img src="" alt="" class="popup__image" />
           <p class="popup__caption"></p>
+        </div>
+      </div>
+      <div class="popup popup_type_avatar-edit popup_is-animated">
+        <div class="popup__content">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Редактировать профиль</h3>
+          <form class="popup__form" name="edit-avatar">
+            <label class="popup__form-field">
+              <input
+                id="input__url-avatar"
+                type="url"
+                name="avatar-link"
+                class="popup__input popup__input_type_url"
+                pattern="\b(?:http|https)://\S+\b"
+                data-error-message="Пожалуйста, введите действительный URL."
+                placeholder="Ссылка на картинку"
+                required
+              />
+              <span class="popup__input-error input__url-avatar-error"
+                >Пожалуйста, введите действительный URL.</span
+              >
+            </label>
+            <button type="submit" class="button popup__button">
+              Сохранить
+            </button>
+          </form>
         </div>
       </div>
     </div>
