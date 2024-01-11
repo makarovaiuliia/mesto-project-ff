@@ -47,8 +47,8 @@ function handleAddCard(event) {
     })
     .finally(() => {
       addSubmitButton.textContent = "Сохранить";
+      resetFormAndClosePopup(formAdd, newCardPopup);
     });
-  resetFormAndClosePopup(formAdd, newCardPopup);
 }
 
 function handleEditFormSubmit(event) {
@@ -64,8 +64,8 @@ function handleEditFormSubmit(event) {
     })
     .finally(() => {
       editSubmitButton.textContent = "Сохранить";
+      resetFormAndClosePopup(formEdit, editPopup);
     });
-  resetFormAndClosePopup(formEdit, editPopup);
 }
 
 function handleEditAvatar(event) {
@@ -79,8 +79,8 @@ function handleEditAvatar(event) {
     .finally(() => {
       editAvatarSubmitButton.textContent = "Сохранить";
       profileImage.style.backgroundImage = `url(${newAvatarUrl})`;
+      resetFormAndClosePopup(formEditAvatar, editAvatarPopup);
     });
-  resetFormAndClosePopup(formEditAvatar, editAvatarPopup);
 }
 
 function handleDeleteCard(event) {
@@ -92,8 +92,8 @@ function handleDeleteCard(event) {
     })
     .finally(() => {
       currentCard.remove();
+      resetFormAndClosePopup(formDelete, deletePopup);
     });
-  resetFormAndClosePopup(formDelete, deletePopup);
 }
 
 function resetFormAndClosePopup(form, popup) {
