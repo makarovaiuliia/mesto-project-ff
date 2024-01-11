@@ -6,198 +6,86 @@ const config = {
   },
 };
 
-// initial card loading
+// send request function
 
-const userRequest = fetch(`${config.baseUrl}/users/me`, {
-  headers: config.headers,
-})
-  .then((res) => {
+const getResponseData = (path, method, body) => {
+  const requestConfig = {
+    method,
+    headers: config.headers,
+  };
+
+  if (body) {
+    requestConfig.body = JSON.stringify(body);
+  }
+
+  return fetch(`${config.baseUrl}${path}`, requestConfig).then((res) => {
     if (res.ok) {
       return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
   });
-
-const cardsRequest = fetch(`${config.baseUrl}/cards`, {
-  headers: config.headers,
-})
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-const initialCardLoad = (
-  profileImage,
-  profileName,
-  profileDescription,
-  addCard
-) => {
-  Promise.all([userRequest, cardsRequest])
-    .then(([userData, cardsData]) => {
-      profileImage.style.backgroundImage = `url(${userData.avatar})`;
-      profileName.textContent = userData.name;
-      profileDescription.textContent = userData.about;
-      const userId = userData._id;
-      cardsData.forEach((card) => {
-        addCard(card, userId);
-      });
-    })
-    .catch((error) => {
-      console.error("Fetch error:", error);
-    });
 };
 
-// other
+// requests
 
-const editProfileInfo = (
-  nameEdit,
-  description,
-  nameInput,
-  descriptionInput,
-  submitButton
-) => {
-  submitButton.textContent = "Сохранение...";
-  fetch(`${config.baseUrl}/users/me`, {
-    method: "PATCH",
-    headers: config.headers,
-    body: JSON.stringify({
-      name: nameEdit.value,
-      about: description.value,
-    }),
-  })
-    .then((res) => {
-      submitButton.textContent = "Сохранить";
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .then((userData) => {
-      nameInput.textContent = userData.name;
-      descriptionInput.textContent = userData.about;
-    });
+const sendAvatar = (newAvatarUrl) => {
+  const body = {
+    avatar: newAvatarUrl,
+  };
+
+  return getResponseData("/users/me/avatar", "PATCH", body);
 };
 
-const addNewCard = (nameAdd, linkAdd, addCard, submitButton) => {
-  submitButton.textContent = "Сохранение...";
+const sendNewCard = (nameAdd, linkAdd) => {
+  const body = {
+    name: nameAdd.value,
+    link: linkAdd.value,
+  };
 
-  fetch(`${config.baseUrl}/cards`, {
-    method: "POST",
-    headers: config.headers,
-    body: JSON.stringify({
-      name: nameAdd.value,
-      link: linkAdd.value,
-    }),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .then((card) => {
-      submitButton.textContent = "Сохранить";
-      addCard(card, card.owner._id, true);
-    });
+  return getResponseData("/cards", "POST", body);
 };
 
-const deleteCardApi = (currentCard, currentCardId) => {
-  fetch(`${config.baseUrl}/cards/${currentCardId}`, {
-    method: "DELETE",
-    headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        currentCard.remove();
-        currentCard = null;
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+const sendProfileInfo = (nameEdit, description) => {
+  const body = {
+    name: nameEdit.value,
+    about: description.value,
+  };
+
+  return getResponseData("/users/me", "PATCH", body);
 };
 
-const addLike = (likes, id) => {
-  fetch(`${config.baseUrl}/cards/likes/${id}`, {
-    method: "PUT",
-    headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .then((cardData) => {
-      likes.textContent = cardData.likes.length;
-    });
+const sendDeleteCard = (currentCardId) => {
+  return getResponseData(`/cards/${currentCardId}`, "DELETE");
 };
 
-const deleteLike = (likes, id) => {
-  fetch(`${config.baseUrl}/cards/likes/${id}`, {
-    method: "DELETE",
-    headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .then((cardData) => {
-      likes.textContent = cardData.likes.length;
-    });
+const sendLike = (id) => {
+  return getResponseData(`/cards/likes/${id}`, "PUT");
 };
 
-const editAvatarApi = (newAvatarUrl, profileImage, submitButton) => {
-  submitButton.textContent = "Сохранение...";
+const sendUnlike = (id) => {
+  return getResponseData(`/cards/likes/${id}`, "DELETE");
+};
 
-  fetch(`${config.baseUrl}/users/me/avatar`, {
-    method: "PATCH",
-    headers: config.headers,
-    body: JSON.stringify({
-      avatar: newAvatarUrl,
-    }),
-  })
-    .then((res) => {
-      submitButton.textContent = "Сохранить";
-      if (res.ok) {
-        profileImage.style.backgroundImage = `url(${newAvatarUrl})`;
-      } else {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+// initial cards and profile info loading
+
+const userRequest = () => {
+  return getResponseData("/users/me", "GET");
+};
+
+const cardsRequest = () => {
+  return getResponseData("/cards", "GET");
+};
+
+const loadProfileAndCards = () => {
+  return Promise.all([userRequest(), cardsRequest()]);
 };
 
 export {
-  addNewCard,
-  editProfileInfo,
-  initialCardLoad,
-  addLike,
-  deleteLike,
-  deleteCardApi,
-  editAvatarApi,
+  sendAvatar,
+  sendNewCard,
+  sendProfileInfo,
+  sendDeleteCard,
+  sendLike,
+  sendUnlike,
+  loadProfileAndCards,
 };

@@ -1,4 +1,9 @@
-import { addNewCard, editProfileInfo, editAvatarApi } from "./api.js";
+import {
+  sendAvatar,
+  sendNewCard,
+  sendProfileInfo,
+  sendDeleteCard,
+} from "./api.js";
 import { closePopup } from "./modal.js";
 import { addCard, profileImage } from "./index.js";
 import { currentCard } from "./card.js";
@@ -32,33 +37,62 @@ function loadCurrentProfileInfo() {
 
 function handleAddCard(event) {
   event.preventDefault();
-  addNewCard(nameAdd, linkAdd, addCard, addSubmitButton);
+  addSubmitButton.textContent = "Сохранение...";
+  sendNewCard(nameAdd, linkAdd)
+    .then((card) => {
+      addCard(card, card.owner._id, true);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      addSubmitButton.textContent = "Сохранить";
+    });
   resetFormAndClosePopup(formAdd, newCardPopup);
 }
 
 function handleEditFormSubmit(event) {
   event.preventDefault();
-  editProfileInfo(
-    nameEdit,
-    description,
-    nameInput,
-    descriptionInput,
-    editSubmitButton
-  );
+  editSubmitButton.textContent = "Сохранение...";
+  sendProfileInfo(nameEdit, description)
+    .then((userData) => {
+      nameInput.textContent = userData.name;
+      descriptionInput.textContent = userData.about;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      editSubmitButton.textContent = "Сохранить";
+    });
   resetFormAndClosePopup(formEdit, editPopup);
 }
 
 function handleEditAvatar(event) {
   event.preventDefault();
   const newAvatarUrl = formEditAvatar.elements["avatar-link"].value;
-  editAvatarApi(newAvatarUrl, profileImage, editAvatarSubmitButton);
+  editAvatarSubmitButton.textContent = "Сохранение...";
+  sendAvatar(newAvatarUrl)
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      editAvatarSubmitButton.textContent = "Сохранить";
+      profileImage.style.backgroundImage = `url(${newAvatarUrl})`;
+    });
   resetFormAndClosePopup(formEditAvatar, editAvatarPopup);
 }
 
 function handleDeleteCard(event) {
   event.preventDefault();
   const currentCardId = currentCard.dataset.id;
-  deleteCardApi(currentCard, currentCardId);
+  sendDeleteCard(currentCardId)
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      currentCard.remove();
+    });
   resetFormAndClosePopup(formDelete, deletePopup);
 }
 

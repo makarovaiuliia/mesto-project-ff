@@ -17,4 +17,17 @@ function closeByEsc(event) {
   }
 }
 
-export { closePopup, openPopup };
+function handleClose(event) {
+  const popup = event.target.closest(".popup");
+  closePopup(popup);
+}
+
+function closeByClick(event) {
+  const popup = event.target.closest(".popup");
+  event.stopPropagation();
+  if (event.target.classList.contains("popup")) {
+    closePopup(popup);
+  }
+}
+
+export { closePopup, openPopup, handleClose, closeByClick };

@@ -1,6 +1,6 @@
 import "../pages/index.css";
 import { likeCard, createCard } from "./card.js";
-import { openPopup, closePopup } from "./modal.js";
+import { openPopup, handleClose, closeByClick } from "./modal.js";
 import {
   loadCurrentProfileInfo,
   handleAddCard,
@@ -16,7 +16,7 @@ import {
   formEditAvatar,
 } from "./handlers.js";
 import { enableValidation, clearValidation } from "./validation.js";
-import { initialCardLoad } from "./api.js";
+import { loadProfileAndCards } from "./api.js";
 
 // initial card loading
 const cardContainer = document.querySelector(".places__list");
@@ -33,7 +33,21 @@ function addCard(item, userId, isNew) {
   }
 }
 
-initialCardLoad(profileImage, profileName, profileDescription, addCard);
+loadProfileAndCards()
+  .then(([userData, cardsData]) => {
+    // loading profile info
+    profileImage.style.backgroundImage = `url(${userData.avatar})`;
+    profileName.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    // loading cards
+    const userId = userData._id;
+    cardsData.forEach((card) => {
+      addCard(card, userId);
+    });
+  })
+  .catch((error) => {
+    console.error("Fetch error:", error);
+  });
 
 // handle opening an image
 const imageContainer = document.querySelector(".popup__image");
@@ -57,24 +71,21 @@ const editAvatarBtn = document.querySelector(".profile__image-button");
 const closeBtns = document.querySelectorAll(".popup__close");
 
 editAvatarBtn.addEventListener("click", () => {
-  const validationConfig = true;
-  clearValidation(formEditAvatar, validationConfig, selectors);
+  clearValidation(formEditAvatar, selectors);
   formEditAvatar.elements["avatar-link"].value = "";
   openPopup(editAvatarPopup);
 });
 
 addBtn.addEventListener("click", () => {
-  const validationConfig = true;
-  clearValidation(formAdd, validationConfig, selectors);
+  clearValidation(formAdd, selectors);
   formAdd.elements["place-name"].value = "";
   formAdd.elements.link.value = "";
   openPopup(newCardPopup);
 });
 
 editBtn.addEventListener("click", () => {
-  const validationConfig = false;
-  clearValidation(formEdit, validationConfig, selectors);
   loadCurrentProfileInfo();
+  clearValidation(formEdit, selectors);
   openPopup(editPopup);
 });
 
@@ -83,19 +94,6 @@ closeBtns.forEach((button) => {
 });
 
 document.addEventListener("click", closeByClick);
-
-function handleClose(event) {
-  const popup = event.target.closest(".popup");
-  closePopup(popup);
-}
-
-function closeByClick(event) {
-  const popup = event.target.closest(".popup");
-  event.stopPropagation();
-  if (event.target.classList.contains("popup")) {
-    closePopup(popup);
-  }
-}
 
 // add event listeners to forms
 formEdit.addEventListener("submit", handleEditFormSubmit);

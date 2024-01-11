@@ -1,4 +1,4 @@
-function clearValidation(formElement, validationConfig, selectorsSettings) {
+function clearValidation(formElement, selectorsSettings) {
   const inputList = Array.from(
     formElement.querySelectorAll(selectorsSettings.inputSelector)
   );
@@ -11,11 +11,7 @@ function clearValidation(formElement, validationConfig, selectorsSettings) {
     hideInputError(formElement, inputElement, selectorsSettings);
   });
 
-  if (validationConfig) {
-    buttonElement.classList.add(selectorsSettings.inactiveButtonClass);
-  } else {
-    buttonElement.classList.remove(selectorsSettings.inactiveButtonClass);
-  }
+  toggleButtonState(inputList, buttonElement, selectorsSettings);
 }
 
 function enableValidation(selectorsSettings) {
@@ -67,8 +63,10 @@ function checkInputValidity(formElement, inputElement, selectorsSettings) {
 function toggleButtonState(inputList, buttonElement, selectorsSettings) {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(selectorsSettings.inactiveButtonClass);
+    buttonElement.setAttribute("disabled", "");
   } else {
     buttonElement.classList.remove(selectorsSettings.inactiveButtonClass);
+    buttonElement.removeAttribute("disabled");
   }
 }
 

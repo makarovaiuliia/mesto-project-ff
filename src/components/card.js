@@ -1,4 +1,4 @@
-import { addLike, deleteLike } from "./api";
+import { sendUnlike, sendLike } from "./api";
 import { openPopup } from "./modal.js";
 
 const deletePopup = document.querySelector(".popup_type_delete");
@@ -26,7 +26,7 @@ function createCard(card, userId, likeCard, openImage) {
   if (!isOwner) {
     deleteBtn.remove();
   } else {
-    deleteBtn.addEventListener("click", (event) => {
+    deleteBtn.addEventListener("click", () => {
       currentCard = cardElement;
       openPopup(deletePopup);
     });
@@ -58,9 +58,21 @@ function likeCard(event, id) {
   likeBtn.classList.toggle("card__like-button_is-active");
 
   if (likeBtn.classList.contains("card__like-button_is-active")) {
-    addLike(likes, id);
+    sendLike(id)
+      .then((cardData) => {
+        likes.textContent = cardData.likes.length;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   } else {
-    deleteLike(likes, id);
+    sendUnlike(id)
+      .then((cardData) => {
+        likes.textContent = cardData.likes.length;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 
