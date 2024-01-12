@@ -24,7 +24,6 @@ function closeByButton(event) {
 
 function closeByClick(event) {
   const popup = event.target.closest(".popup");
-  event.stopPropagation();
   if (event.target.classList.contains("popup")) {
     closePopup(popup);
   }
