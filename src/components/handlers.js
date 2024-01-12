@@ -39,12 +39,14 @@ function handleAddCard(event) {
   addSubmitButton.textContent = "Сохранение...";
   sendNewCard(nameAdd, linkAdd)
     .then((card) => {
-      addSubmitButton.textContent = "Сохранить";
       addCard(card, card.owner._id, true);
       resetFormAndClosePopup(formAdd, newCardPopup);
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      addSubmitButton.textContent = "Сохранить";
     });
 }
 
@@ -53,13 +55,15 @@ function handleEditFormSubmit(event) {
   editSubmitButton.textContent = "Сохранение...";
   sendProfileInfo(nameEdit, description)
     .then((userData) => {
-      editSubmitButton.textContent = "Сохранить";
       nameInput.textContent = userData.name;
       descriptionInput.textContent = userData.about;
       resetFormAndClosePopup(formEdit, editPopup);
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      editSubmitButton.textContent = "Сохранить";
     });
 }
 
@@ -69,12 +73,14 @@ function handleEditAvatar(event) {
   editAvatarSubmitButton.textContent = "Сохранение...";
   sendAvatar(newAvatarUrl)
     .then(() => {
-      editAvatarSubmitButton.textContent = "Сохранить";
       profileImage.style.backgroundImage = `url(${newAvatarUrl})`;
       resetFormAndClosePopup(formEditAvatar, editAvatarPopup);
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      editAvatarSubmitButton.textContent = "Сохранить";
     });
 }
 
@@ -88,7 +94,7 @@ function handleDeleteCard(event) {
     })
     .catch((err) => {
       console.log(err);
-    })
+    });
 }
 
 function resetFormAndClosePopup(form, popup) {

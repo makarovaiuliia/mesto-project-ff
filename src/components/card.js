@@ -4,7 +4,6 @@ import { openPopup } from "./modal.js";
 const deletePopup = document.querySelector(".popup_type_delete");
 let currentCard = null;
 
-// Простите, почему то пропустила комментарий про функцию delete в прошлой итерации. Я случайно:(
 function createCard(card, userId, likeCard, openImage, deleteCard) {
   const template = document.getElementById("card-template").content;
   const cardElement = template.querySelector(".card").cloneNode(true);
