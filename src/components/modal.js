@@ -17,7 +17,7 @@ function closeByEsc(event) {
   }
 }
 
-function handleClose(event) {
+function closeByButton(event) {
   const popup = event.target.closest(".popup");
   closePopup(popup);
 }
@@ -30,4 +30,4 @@ function closeByClick(event) {
   }
 }
 
-export { closePopup, openPopup, handleClose, closeByClick };
+export { closePopup, openPopup, closeByButton, closeByClick };

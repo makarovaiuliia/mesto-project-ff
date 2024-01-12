@@ -7,7 +7,6 @@ import {
 import { closePopup } from "./modal.js";
 import { addCard, profileImage } from "./index.js";
 import { currentCard } from "./card.js";
-import { deleteCardApi } from "./api.js";
 
 const newCardPopup = document.querySelector(".popup_type_new-card");
 const formAdd = document.forms["new-place"];
@@ -40,14 +39,12 @@ function handleAddCard(event) {
   addSubmitButton.textContent = "Сохранение...";
   sendNewCard(nameAdd, linkAdd)
     .then((card) => {
+      addSubmitButton.textContent = "Сохранить";
       addCard(card, card.owner._id, true);
+      resetFormAndClosePopup(formAdd, newCardPopup);
     })
     .catch((err) => {
       console.log(err);
-    })
-    .finally(() => {
-      addSubmitButton.textContent = "Сохранить";
-      resetFormAndClosePopup(formAdd, newCardPopup);
     });
 }
 
@@ -56,15 +53,13 @@ function handleEditFormSubmit(event) {
   editSubmitButton.textContent = "Сохранение...";
   sendProfileInfo(nameEdit, description)
     .then((userData) => {
+      editSubmitButton.textContent = "Сохранить";
       nameInput.textContent = userData.name;
       descriptionInput.textContent = userData.about;
+      resetFormAndClosePopup(formEdit, editPopup);
     })
     .catch((err) => {
       console.log(err);
-    })
-    .finally(() => {
-      editSubmitButton.textContent = "Сохранить";
-      resetFormAndClosePopup(formEdit, editPopup);
     });
 }
 
@@ -73,13 +68,13 @@ function handleEditAvatar(event) {
   const newAvatarUrl = formEditAvatar.elements["avatar-link"].value;
   editAvatarSubmitButton.textContent = "Сохранение...";
   sendAvatar(newAvatarUrl)
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
+    .then(() => {
       editAvatarSubmitButton.textContent = "Сохранить";
       profileImage.style.backgroundImage = `url(${newAvatarUrl})`;
       resetFormAndClosePopup(formEditAvatar, editAvatarPopup);
+    })
+    .catch((err) => {
+      console.log(err);
     });
 }
 
@@ -87,13 +82,13 @@ function handleDeleteCard(event) {
   event.preventDefault();
   const currentCardId = currentCard.dataset.id;
   sendDeleteCard(currentCardId)
+    .then(() => {
+      currentCard.remove();
+      resetFormAndClosePopup(formDelete, deletePopup);
+    })
     .catch((err) => {
       console.log(err);
     })
-    .finally(() => {
-      currentCard.remove();
-      resetFormAndClosePopup(formDelete, deletePopup);
-    });
 }
 
 function resetFormAndClosePopup(form, popup) {

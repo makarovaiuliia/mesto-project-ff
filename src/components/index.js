@@ -1,6 +1,6 @@
 import "../pages/index.css";
-import { likeCard, createCard } from "./card.js";
-import { openPopup, handleClose, closeByClick } from "./modal.js";
+import { likeCard, createCard, deleteCard } from "./card.js";
+import { openPopup, closeByButton, closeByClick } from "./modal.js";
 import {
   loadCurrentProfileInfo,
   handleAddCard,
@@ -25,7 +25,7 @@ const profileDescription = document.querySelector(".profile__description");
 const profileImage = document.querySelector(".profile__image");
 
 function addCard(item, userId, isNew) {
-  const card = createCard(item, userId, likeCard, openImage);
+  const card = createCard(item, userId, likeCard, openImage, deleteCard);
   if (isNew) {
     cardContainer.prepend(card);
   } else {
@@ -71,15 +71,14 @@ const editAvatarBtn = document.querySelector(".profile__image-button");
 const closeBtns = document.querySelectorAll(".popup__close");
 
 editAvatarBtn.addEventListener("click", () => {
+  formEditAvatar.reset();
   clearValidation(formEditAvatar, selectors);
-  formEditAvatar.elements["avatar-link"].value = "";
   openPopup(editAvatarPopup);
 });
 
 addBtn.addEventListener("click", () => {
+  formAdd.reset();
   clearValidation(formAdd, selectors);
-  formAdd.elements["place-name"].value = "";
-  formAdd.elements.link.value = "";
   openPopup(newCardPopup);
 });
 
@@ -90,10 +89,14 @@ editBtn.addEventListener("click", () => {
 });
 
 closeBtns.forEach((button) => {
-  button.addEventListener("click", handleClose);
+  button.addEventListener("click", closeByButton);
 });
 
-document.addEventListener("click", closeByClick);
+const popups = document.querySelectorAll('.popup');
+
+popups.forEach((popup) => {
+  popup.addEventListener('click', closeByClick)
+})
 
 // add event listeners to forms
 formEdit.addEventListener("submit", handleEditFormSubmit);
